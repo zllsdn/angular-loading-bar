@@ -294,7 +294,7 @@ angular.module('cfp.loadingBar', [])
           if (promise && promise.then) {
             promise.then(_completeAnimation);
           }
-          $document.find(spinnerSelector).show();
+          $document.find(spinnerSelector).hide();
         }, 200);
       }
 
