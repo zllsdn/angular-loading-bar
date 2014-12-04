@@ -155,7 +155,6 @@ angular.module('cfp.loadingBar', [])
     this.latencyThreshold = 100;
     this.startSize = 0.02;
     this.parentSelector = 'body';
-    this.parentSpinnerSelector = '.loading-spinner';
     this.spinnerSelector = '.loading-bar-spinner';
     this.spinnerTemplate = '<div class="loading-bar-spinner"><div class="spinner-icon"></div></div>';
     this.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
@@ -163,7 +162,6 @@ angular.module('cfp.loadingBar', [])
     this.$get = ['$injector', '$document', '$timeout', '$rootScope', function ($injector, $document, $timeout, $rootScope) {
       var $animate;
       var $parentSelector = this.parentSelector,
-        $parentSpinnerSelector = this.parentSpinnerSelector,
         spinnerSelector = this.spinnerSelector,
         loadingBarContainer = angular.element(this.loadingBarTemplate),
         loadingBar = loadingBarContainer.find('div').eq(0),
@@ -187,7 +185,6 @@ angular.module('cfp.loadingBar', [])
         }
 
         var $parent = $document.find($parentSelector).eq(0);
-        var $spinnerParent = $document.find($parentSpinnerSelector);
         $timeout.cancel(completeTimeout);
 
         // do not continually broadcast the started event:
@@ -202,8 +199,8 @@ angular.module('cfp.loadingBar', [])
           $animate.enter(loadingBarContainer, $parent);
         }
 
-        if (includeSpinner && $spinnerParent.length) {
-          $animate.enter(spinner, $spinnerParent);
+        if (includeSpinner) {
+          $document.find(spinnerSelector).show();
         }
 
         _set(startSize);
@@ -291,7 +288,7 @@ angular.module('cfp.loadingBar', [])
           if (promise && promise.then) {
             promise.then(_completeAnimation);
           }
-          $animate.leave($document.find(spinnerSelector));
+          $document.find(spinnerSelector).show();
         }, 200);
       }
 
